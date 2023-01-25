@@ -1,4 +1,5 @@
 // Duplicates
+console.log("\n*** DUPLICATES ***");
 {
     let string = 'abcdeffghijjklmnooppqrstauvwxyzabbaa';
 
@@ -26,4 +27,20 @@
         // Account for now shortened string
         i -= counter;
     }
+}
+
+console.log("\n*** REPLACEMENTS ***");
+// Replacements
+{
+    let string = 'abcdeffghijjklmnooppqrstauvwxyzabbaa';
+    let search = 'a';
+    let replace = 'X';
+
+    let newstring = '';
+    for (let i = 0; i < string.length; i++) {
+        newstring += (string.charAt(i) == search ? replace : string.charAt(i));
+    }
+    string = newstring;
+
+    console.log(string);
 }
