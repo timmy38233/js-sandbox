@@ -1,4 +1,3 @@
-
 console.log('\n*** DUPLICATES ***');
 {
     let string = 'abcdeffghijjklmnooppqrstauvwxyzabbaa';
@@ -67,7 +66,7 @@ console.log('\n*** VOWELS ***');
 
 console.log('\n*** PANGRAM ***');
 {
-    let string = 'abcdeffghijjklmnooppqrstauvwxyzabbaa'
+    let string = 'abcdeffghijjklmnooppqrstauvwxyzabbaa';
 
     let alphabet = 'abcdefghijklmnopqrstuvwxyz';
 
@@ -85,4 +84,40 @@ console.log('\n*** PANGRAM ***');
     }
 
     console.log(`The string '${string}' is${isPangram ? ' ' : ' not '}a pangram`);
+}
+
+console.log('\n*** FIRST NON-REPEATING CHARACTER ***');
+{
+    let string = 'aaaabbbcccccdeeeffiii';
+
+    console.log(`SEARCH: ${string}`);
+
+    // Scope variables outside the loop to use them in the output
+    let foundNonRepeating = false;
+    let i;
+    let j = 0;
+
+    for (i = 0; i < string.length; i = j) {
+        let c = string.charAt(i);
+
+        // Start from current character an look right. Stop at first differing character
+        while (j < string.length && string.charAt(j) && c == string.charAt(j)) {
+            j++;
+        }
+
+        // If the preceding loop only ran once (that means that the current character only successfully compared to itself), we have found a non-repeating character
+        if (j == i + 1) {
+            foundNonRepeating = true;
+            break;
+        }
+    }
+
+    if (foundNonRepeating) {
+        console.log(`FOUND:  ${' '.repeat(i)}^`);
+        console.log(
+            `'${string.charAt(i)}' is the first non-repeating character in the given string`
+        );
+    } else {
+        console.log('No non-repeating characters in this string');
+    }
 }
