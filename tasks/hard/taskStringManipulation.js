@@ -121,3 +121,45 @@ console.log('\n*** FIRST NON-REPEATING CHARACTER ***');
         console.log('No non-repeating characters in this string');
     }
 }
+
+console.log('\n*** LONGEST NON-REPEATING SUBSTRING ***');
+{
+    let string = 'aaaabbbccdefghiiiiijjjjklmnopqrsssssstttttuuuuuvv';
+
+    let maxLength = 1;
+    let indexStart;
+    let longestSubstring = '';
+    let j;
+
+    for (let i = 0; i < string.length; i += j) {
+        let c = string.charAt(i);
+
+        j = 1;
+
+        // Looping as long as there are different letters to the right
+        // Building a substring for outputting it later
+        let substring = c;
+        while (string.charAt(i + j) != c) {
+            c = string.charAt(i + j);
+            substring += c;
+            j++;
+        }
+
+        // If current length is greater than the maximum so far, update the maximum
+        if (j - 1 > maxLength) {
+            maxLength = j;
+            indexStart = i;
+            longestSubstring = substring;
+        }
+    }
+
+    console.log(`SEARCH: ${string}`);
+
+    // Check if a maximum was found
+    if (indexStart) {
+        console.log(`FOUND:  ${' '.repeat(indexStart)}${'^'.repeat(maxLength)}`);
+        console.log(`The longest non-repeating substring is ${longestSubstring}`);
+    } else {
+        console.log('The searchstring only consists of repeating letters or is empty');
+    }
+}
