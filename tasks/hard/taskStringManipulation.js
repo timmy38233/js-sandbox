@@ -1,4 +1,4 @@
-// Duplicates
+
 console.log('\n*** DUPLICATES ***');
 {
     let string = 'abcdeffghijjklmnooppqrstauvwxyzabbaa';
@@ -30,7 +30,6 @@ console.log('\n*** DUPLICATES ***');
 }
 
 console.log('\n*** REPLACEMENTS ***');
-// Replacements
 {
     let string = 'abcdeffghijjklmnooppqrstauvwxyzabbaa';
     let search = 'a';
@@ -46,13 +45,12 @@ console.log('\n*** REPLACEMENTS ***');
 }
 
 console.log('\n*** VOWELS ***');
-// Vowels
 {
     let string = 'abcdeffghijjklmnooppqrstauvwxyzabbaa';
 
     let vowels = 'aeiouüöä';
     let newstring = '';
-    
+
     for (let i = 0; i < string.length; i++) {
         let c = string.charAt(i);
         let isVowel = false;
@@ -65,4 +63,26 @@ console.log('\n*** VOWELS ***');
     string = newstring;
 
     console.log(string);
+}
+
+console.log('\n*** PANGRAM ***');
+{
+    let string = 'abcdeffghijjklmnooppqrstauvwxyzabbaa'
+
+    let alphabet = 'abcdefghijklmnopqrstuvwxyz';
+
+    let isPangram = true;
+    // Outer loop iterates over the alphabet
+    for (let i = 0; i < alphabet.length && isPangram; i++) {
+        let containsLetter = false;
+        // Inner loop until it finds a matching letter
+        for (let j = 0; j < string.length && !containsLetter; j++) {
+            containsLetter = alphabet.charAt(i) == string.charAt(j).toLowerCase();
+        }
+
+        // If the inner loop did not find the letter, the string is not a pangram and therefore the outer loop exits early
+        isPangram = containsLetter;
+    }
+
+    console.log(`The string '${string}' is${isPangram ? ' ' : ' not '}a pangram`);
 }
