@@ -1,5 +1,5 @@
 // Duplicates
-console.log("\n*** DUPLICATES ***");
+console.log('\n*** DUPLICATES ***');
 {
     let string = 'abcdeffghijjklmnooppqrstauvwxyzabbaa';
 
@@ -29,7 +29,7 @@ console.log("\n*** DUPLICATES ***");
     }
 }
 
-console.log("\n*** REPLACEMENTS ***");
+console.log('\n*** REPLACEMENTS ***');
 // Replacements
 {
     let string = 'abcdeffghijjklmnooppqrstauvwxyzabbaa';
@@ -38,7 +38,29 @@ console.log("\n*** REPLACEMENTS ***");
 
     let newstring = '';
     for (let i = 0; i < string.length; i++) {
-        newstring += (string.charAt(i) == search ? replace : string.charAt(i));
+        newstring += string.charAt(i) == search ? replace : string.charAt(i);
+    }
+    string = newstring;
+
+    console.log(string);
+}
+
+console.log('\n*** VOWELS ***');
+// Vowels
+{
+    let string = 'abcdeffghijjklmnooppqrstauvwxyzabbaa';
+
+    let vowels = 'aeiouüöä';
+    let newstring = '';
+    
+    for (let i = 0; i < string.length; i++) {
+        let c = string.charAt(i);
+        let isVowel = false;
+
+        for (let j = 0; j < vowels.length && !isVowel; j++) {
+            isVowel = vowels.charAt(j) == c;
+        }
+        newstring += isVowel ? '' : string.charAt(i);
     }
     string = newstring;
 
