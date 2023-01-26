@@ -7,6 +7,9 @@ console.log('\n*** Task1 ***');
     }
 }
 
+
+
+
 console.log('\n*** Task2 ***');
 {
     let string = 'abcdefg';
@@ -16,6 +19,9 @@ console.log('\n*** Task2 ***');
         console.log(string.charAt(i - 1));
     }
 }
+
+
+
 
 console.log('\n*** Task3 ***');
 {
@@ -30,32 +36,56 @@ console.log('\n*** Task3 ***');
     console.log(reverse);
 }
 
+
+
+
 console.log('\n*** Task4 ***');
 {
     let string = 'abcba';
 
     let isPalindrome = true;
-    for (let i = 0; i < string.length / 2; i++) {
+    for (let i = 0; i < string.length / 2 && isPalindrome; i++) {
         isPalindrome = string.charAt(i) == string.charAt(string.length - (i + 1));
     }
 
     console.log(`The string '${string}' is a Palindrome: ${isPalindrome}`);
 }
 
+
+
+
 console.log('\n*** Task5 ***');
 {
-    let string = 'abcba';
-    let character = 'b';
+    let string = 'abbcba';
+    console.log(`SEARCH: ${string}`);
 
-    let counter = 0;
-    for (let i = 0; i < string.length; i++) {
-        if (string.charAt(i) == character) {
-            counter++;
+    for (let cIndex = string.length; cIndex >= 0; cIndex--) {
+        let character = string.charAt(cIndex);
+
+        if (character) {
+            let counter = 0;
+            for (let i = 0; i < string.length; i++) {
+                if (string.charAt(i) == character) {
+                    counter++;
+                }
+            }
+
+            console.log(`The character ${character} appears ${counter} times`);
+
+            // Remove character
+            let newstring = '';
+            for (let j = 0; j < string.length; j++) {
+                if (character != string.charAt(j)) {
+                    newstring += string.charAt(j);
+                }
+            }
+            string = newstring;
         }
     }
-
-    console.log(`The character ${character} appears ${counter} times in '${string}'`);
 }
+
+
+
 
 console.log('\n*** Task6 ***');
 {
@@ -70,18 +100,24 @@ console.log('\n*** Task6 ***');
     console.log(output);
 }
 
+
+
+
 console.log('\n*** Task7 ***');
 {
     let string = 'abcdefghijklmnop';
     let n = 3;
 
-    let output = string;
+    let output = '';
     for (let i = 0; i < n; i++) {
         output += string;
     }
 
     console.log(output);
 }
+
+
+
 
 console.log('\n*** Task8 ***');
 {
