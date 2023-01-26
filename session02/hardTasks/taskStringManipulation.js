@@ -28,6 +28,9 @@ console.log('\n*** DUPLICATES ***');
     }
 }
 
+
+
+
 console.log('\n*** REPLACEMENTS ***');
 {
     let string = 'abcdeffghijjklmnooppqrstauvwxyzabbaa';
@@ -42,6 +45,9 @@ console.log('\n*** REPLACEMENTS ***');
 
     console.log(string);
 }
+
+
+
 
 console.log('\n*** VOWELS ***');
 {
@@ -64,6 +70,9 @@ console.log('\n*** VOWELS ***');
     console.log(string);
 }
 
+
+
+
 console.log('\n*** PANGRAM ***');
 {
     let string = 'abcdeffghijjklmnooppqrstauvwxyzabbaa';
@@ -85,6 +94,9 @@ console.log('\n*** PANGRAM ***');
 
     console.log(`The string '${string}' is${isPangram ? ' ' : ' not '}a pangram`);
 }
+
+
+
 
 console.log('\n*** FIRST NON-REPEATING CHARACTER ***');
 {
@@ -121,6 +133,9 @@ console.log('\n*** FIRST NON-REPEATING CHARACTER ***');
         console.log('No non-repeating characters in this string');
     }
 }
+
+
+
 
 console.log('\n*** LONGEST NON-REPEATING SUBSTRING ***');
 {
