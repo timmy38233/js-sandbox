@@ -237,7 +237,7 @@ function countTrailingZeroes(n, counter = 0) {
 
 function trailingZeroesInFactorial(n) {
     let fact = factorialRecursionHard(n);
-    return countTrailingZeroes(fact, 0);
+    return countTrailingZeroes(fact);
 }
 
 let trailingZeroesN = 20;
