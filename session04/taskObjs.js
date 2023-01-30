@@ -48,7 +48,7 @@ console.log(isFunction(exampleObject, 'eat'));
 function newObjWithKeyLength(obj, len) {
     let newObj = {};
     for (let key in obj) {
-        if (key.length === len) {
+        if (typeof key === 'string' && key.length === len) {
             newObj[key] = obj[key];
         }
     }
@@ -114,7 +114,7 @@ function sortByKeyLength(obj) {
     let newObj = {};
     let keys = [];
 
-    // Loop can be replaced by Array.keys()
+    // Loop can be replaced by Object.keys()
     for (let key in obj) {
         keys.push(key);
     }
@@ -140,6 +140,7 @@ console.log(sortByKeyLength(exampleObject));
 /**
  * Hard Task3: Find nearest key
  */
+
 function findNearestKey(obj, key) {
     if (key in obj) return obj[key];
 
