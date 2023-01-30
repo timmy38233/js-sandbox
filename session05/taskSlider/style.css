@@ -1,0 +1,50 @@
+html, body {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    padding: 10px;
+    box-sizing: border-box;
+
+    font-family: Arial, Helvetica, sans-serif;
+    color: #333;
+}
+
+.page__wrapper {
+    min-width: 600px;
+    margin: auto;
+}
+
+h1 {
+    text-align: center;
+}
+
+.slide__wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.slide__boxes {
+    display: flex;
+    flex-wrap: wrap;
+    width: 800px;
+    margin: auto;
+}
+
+.box {
+    --box-size: 5px;
+    width: var(--box-size);
+    height: var(--box-size);
+    margin: 1px;
+
+    /* opacity: 0;
+    transition: all 0.1s; */
+    display: none;
+}
+
+.box--visible {
+    /* opacity: 1; */
+    display: block;
+}
