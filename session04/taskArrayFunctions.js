@@ -22,6 +22,8 @@ function largestNum(arr) {
 }
 console.log('Largest: ' + largestNum(exampleArray));
 
+// return arr.reduce((acc, curr) => Math.max(acc, curr))
+
 /**
  * Task3: Smallest
  */
