@@ -7,13 +7,15 @@ body {
 body {
     margin: 0;
     padding: 0;
-
-    font-family: Arial, Helvetica, sans-serif;
     background-color: #eee;
+
+    font-family: 'Roboto', Arial, Helvetica, sans-serif;
+    color: #333;
 }
 
 .wrapper {
     box-sizing: border-box;
+    min-width: 400px;
     width: 60%;
     min-height: 100%;
 
@@ -26,8 +28,19 @@ body {
     border-right: 1px solid #666;
 }
 
+h1 {
+    text-align: center;
+    font-size: 5em;
+    font-weight: 100;
+}
+
 #sort-btn {
     cursor: pointer;
+    margin: 10px auto;
+    text-align: center;
+
+    font-size: 0.8em;
+    color: #666;
 }
 
 #todo-list {
@@ -39,43 +52,59 @@ body {
     flex-direction: column;
 }
 
-.todoitem {
-    --prio-color: grey;
-    --item-padding: 5px;
+.todoitem,
+.todo-form {
+    --prio-color: #ddd;
+    --item-padding: 10px;
 
     box-sizing: border-box;
     width: 250px;
-    min-height: 60px;
+    min-height: 75px;
+    margin: 5px auto;
     padding: var(--item-padding);
+    padding-bottom: calc(var(--item-padding) + 2em);
     line-height: 1em;
     position: relative;
 
     border-radius: 5px;
     border: 1px solid var(--prio-color);
 
-    color: #333;
+    font-weight: 300;
+    color: #444;
+    box-shadow: 0 2px 10px #ddd;
 
-    transition: all 0.5s;
+    transition: all 0.5s, box-shadow 0.3s;
     transform: translateX(0);
     opacity: 1;
-    
 }
 
-.todoitem span {
+.todoitem:hover {
+    box-shadow: 0 5px 10px #666;
+}
+
+.todoitem span,
+.todo-form > * {
     display: block;
 }
 
-.todoitem__title {
+.todoitem__title,
+.todo-form #todo-text-input {
     width: 90%;
-    height: calc(100% - 1em);
 }
 
-.todoitem__duedate {
+.todo-form #todo-text-input {
+    width: calc(100% - var(--item-padding) + 2px);
+    border: none;
+}
+
+.todoitem__duedate,
+.todo-form #todo-date-input {
     position: absolute;
     bottom: var(--item-padding);
 
     font-size: 0.8em;
     color: #666;
+    border: none;
 }
 
 .todoitem__prio {
@@ -85,6 +114,26 @@ body {
 
     font-size: 0.8em;
     color: var(--prio-color);
+}
+.todo-form #todo-prio-input {
+    position: absolute;
+    bottom: var(--item-padding);
+    right: calc(var(--item-padding) + 30px);
+
+    font-size: 0.8em;
+    border: none;
+    background: transparent;
+    color: #666;
+}
+
+.todo-form input[type='submit'] {
+    position: absolute;
+    bottom: var(--item-padding);
+    right: var(--item-padding);
+
+    border: none;
+    background: transparent;
+    cursor: pointer;
 }
 
 .todoitem__delete-btn {
@@ -106,16 +155,15 @@ body {
 }
 
 .todoitem__delete-btn:hover {
-    background-color: darkseagreen;
+    background-color: #5a5;
     color: #fff;
 }
-
 
 .todoitem--prio-low {
     --prio-color: green;
 }
 .todoitem--prio-normal {
-    --prio-color: blue;
+    --prio-color: inherit;
 }
 .todoitem--prio-high {
     --prio-color: red;

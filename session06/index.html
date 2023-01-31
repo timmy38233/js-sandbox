@@ -1,33 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ToDo App</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="events.js"></script>
-</head>
-<body>
-    <div class="wrapper">
-        <h1>ToDo List</h1>
-        <div id="sort-btn">Sort by prio: <span id="sort-indicator">-</span></div>
-        <form action="">
-            <label for="todo-text-input">Add new item:</label>
-            <input type="text" id="todo-text-input" placeholder="ToDo…">
-            <label for="todo-date-input">Due Date:</label>
-            <input type="date" id ="todo-date-input">
-            <label for="todo-prio-input">Priority:</label>
-            <select id="todo-prio-input">
-                <option value="2">high</option>
-                <option value="1" selected="selected">normal</option>
-                <option value="0">low</option>
-            </select>
-            <input type="submit" value="Submit">
-        </form>
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>ToDo App</title>
 
-        <ul id="todo-list">
-        </ul>
-    </div>
-</body>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400&display=swap"
+            rel="stylesheet" />
+
+        <link rel="stylesheet" href="style.css" />
+        <script src="events.js"></script>
+    </head>
+    <body>
+        <div class="wrapper">
+            <h1>ToDo List</h1>
+            <div id="sort-btn">Sort by prio: <span id="sort-indicator">-</span></div>
+
+            <ul id="todo-list"></ul>
+
+            <form class="todo-form" action="">
+                <input type="text" id="todo-text-input" placeholder="Title…" />
+                <input type="date" id="todo-date-input" />
+                <select id="todo-prio-input">
+                    <option value="2">high</option>
+                    <option value="1" selected="selected">normal</option>
+                    <option value="0">low</option>
+                </select>
+                <input type="submit" value="+" />
+            </form>
+        </div>
+    </body>
 </html>
