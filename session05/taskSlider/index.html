@@ -1,21 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Slider</title>
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Slider</title>
 
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <div class="page__wrapper">
-        <h1>Slider & Boxes</h1>
-        <header class="slide__wrapper">
-            <input id="slider" type="range" min="5" max="200">
-        </header>
-        <div class="slide__boxes"></div>
-    </div>
-    <script src="./domSlider.js"></script>
-</body>
+        <link rel="stylesheet" href="style.css" />
+    </head>
+    <body>
+        <div class="page__wrapper">
+            <header class="logo"></header>
+
+            <input class="burger burger__checkbox" type="checkbox" id="burger__checkbox" />
+            <label class="burger burger__label" for="burger__checkbox">☰</label>
+
+            <nav class="main-menu stand-out" tabindex="0">
+                <div class="main-menu__item">Solo Item 1</div>
+                <div class="main-menu__item">Solo Item 2</div>
+                <div class="main-menu__item main-menu__item--has-sub" tabindex="0">
+                    Parent Item 1
+                    <div class="sub-menu">
+                        <div class="sub-menu__item">Submenu Item 1</div>
+                        <div class="sub-menu__item">Submenu Item 2</div>
+                        <div class="sub-menu__item">Submenu Item 3</div>
+                    </div>
+                </div>
+                <div class="main-menu__item main-menu__item--has-sub" tabindex="0">
+                    Parent Item 2
+                    <div class="sub-menu">
+                        <div class="sub-menu__item">Submenu Item 1</div>
+                        <div class="sub-menu__item">Submenu Item 2</div>
+                    </div>
+                </div>
+                <div class="main-menu__item">Solo Item 3</div>
+            </nav>
+
+            <main class="content">
+                <h1>Slider & Boxes</h1>
+                <header class="slide__wrapper">
+                    <input id="slider" type="range" min="5" max="200" />
+                </header>
+                <div class="slide__boxes"></div>
+            </main>
+        </div>
+        <script src="./domSlider.js"></script>
+    </body>
 </html>
