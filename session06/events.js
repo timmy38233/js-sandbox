@@ -1,5 +1,4 @@
 window.addEventListener('DOMContentLoaded', () => {
-
     const form = document.querySelector('form');
     const todoListContainer = document.getElementById('todo-list');
     const textInput = document.getElementById('todo-text-input');
@@ -15,7 +14,7 @@ window.addEventListener('DOMContentLoaded', () => {
      * [
      *  {text,
      *   date,
-     *   prio, 
+     *   prio,
      *  },
      *  ...
      * ]
@@ -25,7 +24,7 @@ window.addEventListener('DOMContentLoaded', () => {
     form.addEventListener('submit', (e) => {
         e.preventDefault();
         addItem(todoListContainer, todoItems, textInput.value, dateInput.value, prioInput.value);
-        
+
         textInput.value = '';
         dateInput.value = '';
         prioInput.value = 1;
@@ -41,9 +40,9 @@ window.addEventListener('DOMContentLoaded', () => {
 
 /**
  * Generates a unique id for a todo list element
- * @param {HTMLElement} container 
- * @param {Array} todoItems 
- * @param {number} itemIndex 
+ * @param {HTMLElement} container
+ * @param {Array} todoItems
+ * @param {number} itemIndex
  * @returns string of new id
  */
 function generateID(container, todoItems, itemIndex) {
@@ -54,18 +53,15 @@ function generateID(container, todoItems, itemIndex) {
 }
 
 /**
- * Sorts the todoItems list with regard to the current sort state 
- * @param {HTMLElement} container 
- * @param {Array} todoItems 
- * @param {String} key 
+ * Sorts the todoItems list with regard to the current sort state
+ * @param {HTMLElement} container
+ * @param {Array} todoItems
+ * @param {String} key
  * @param {number} sortState 0 -> ascending, 1 -> descending
- * @param {HTMLElement} sortIndicator 
+ * @param {HTMLElement} sortIndicator
  */
 function sortItems(container, todoItems, key, sortState, sortIndicator) {
-    const sortingFunctions = [
-        (a, b) => (a[key] > b[key] ? 1 : a[key] < b[key] ? -1 : 0),
-        (a, b) => (a[key] < b[key] ? 1 : a[key] > b[key] ? -1 : 0),
-    ];
+    const sortingFunctions = [(a, b) => a[key] - b[key], (a, b) => b[key] - a[key]];
 
     const arrows = ['↑', '↓'];
     sortIndicator.innerText = arrows[sortState];
@@ -77,8 +73,8 @@ function sortItems(container, todoItems, key, sortState, sortIndicator) {
 
 /**
  * Generates the elements to display the items inside the given container
- * @param {HTMLElement} container 
- * @param {Array} todoItems 
+ * @param {HTMLElement} container
+ * @param {Array} todoItems
  */
 function displayItems(container, todoItems) {
     container.querySelectorAll('.todoitem').forEach((i) => i.remove());
@@ -99,7 +95,9 @@ function displayItems(container, todoItems) {
         listItem.appendChild(deleteButton);
 
         listItem.appendChild(createItemComponent('span', 'todoitem__title', todoItems[index].text));
-        listItem.appendChild(createItemComponent('span', 'todoitem__duedate', todoItems[index].date));
+        listItem.appendChild(
+            createItemComponent('span', 'todoitem__duedate', todoItems[index].date)
+        );
         listItem.appendChild(createItemComponent('span', 'todoitem__prio', prioText));
 
         container.appendChild(listItem);
@@ -108,10 +106,10 @@ function displayItems(container, todoItems) {
 
 /**
  * Creates an HTMLElement with given classes and a given innerText
- * @param {String} type 
- * @param {String} classes 
- * @param {String} content 
- * @returns 
+ * @param {String} type
+ * @param {String} classes
+ * @param {String} content
+ * @returns
  */
 function createItemComponent(type, classes, content) {
     const component = document.createElement(type);
@@ -120,14 +118,13 @@ function createItemComponent(type, classes, content) {
     return component;
 }
 
-
 /**
  * Adds a new item to the todoItems array and displays the updated array afterwards
- * @param {HTMLElement} container 
- * @param {Array} todoItems 
- * @param {String} itemText 
- * @param {String} itemDueDate 
- * @param {Number} itemPrio 
+ * @param {HTMLElement} container
+ * @param {Array} todoItems
+ * @param {String} itemText
+ * @param {String} itemDueDate
+ * @param {Number} itemPrio
  */
 function addItem(container, todoItems, itemText, itemDueDate, itemPrio) {
     todoItems.push({
@@ -138,13 +135,12 @@ function addItem(container, todoItems, itemText, itemDueDate, itemPrio) {
     displayItems(container, todoItems);
 }
 
-
 /**
  * Removes an element from the todoItems array.
  * Creates a fade out animation and delays the actual array removal.
- * @param {HTMLElement} container 
- * @param {Array} todoItems 
- * @param {Number} index 
+ * @param {HTMLElement} container
+ * @param {Array} todoItems
+ * @param {Number} index
  */
 function deleteItem(container, todoItems, index) {
     let elem = document.getElementById(generateID(container, todoItems, index));
