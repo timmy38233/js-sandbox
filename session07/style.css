@@ -22,8 +22,12 @@ body {
     font-weight: bold;
 }
 
-#game__infotext {
-    margin-bottom: 50px;
+#game__info {
+    margin-bottom: 25px;
+    height: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .board {
@@ -82,8 +86,8 @@ body {
     opacity: 1;
 }
 
-
-.board__cell--occupied {
+.board__cell--occupied,
+.board.game-finished .board__cell {
     cursor: default;
 }
 
@@ -96,10 +100,11 @@ body {
     content: '◯';
 }
 
-.board__cell:hover:not(.board__cell--occupied)::after {
+.board:not(.game-finished) .board__cell:hover:not(.board__cell--occupied)::after {
     opacity: 0.25;
 }
 
-.board__cell--winning {
-    transform: scale(1.5);
+.board__cell--winning::after {
+    font-size: 1.5em;
+    color: gold;
 }

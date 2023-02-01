@@ -13,11 +13,26 @@ function createBoard(rows, cols, d = 0) {
     return board;
 }
 
+const SIZE = 5;
+
 ((board, currentPlayer) => {
     function renderBoard(board, currentPlayer) {
         const $board = document.createElement('div');
         $board.classList.add('board');
         $board.classList.add(`board--player${currentPlayer}`);
+
+        $board.addEventListener('gamestatechange', (gameState) => {
+            updateBoard(board);
+
+            let winState = getWinState(board, currentPlayer);
+            if (winState.hasSomeoneWon) {
+                endGame(gameState.target, winState);
+            }
+
+            gameState.target.classList.toggle(`board--player${currentPlayer}`);
+            currentPlayer = currentPlayer == 1 ? 2 : 1;
+            gameState.target.classList.toggle(`board--player${currentPlayer}`);
+        });
 
         for (let rowIndex in board) {
             let row = board[rowIndex];
@@ -32,11 +47,12 @@ function createBoard(rows, cols, d = 0) {
                 $cell.setAttribute('id', `cell-${rowIndex}-${colIndex}`);
 
                 $cell.addEventListener('click', () => {
-                    if (markCell(board, { row: rowIndex, col: colIndex }, currentPlayer)) {
-                        updateBoard(board, currentPlayer);
-                        $board.classList.toggle(`board--player${currentPlayer}`);
-                        currentPlayer = currentPlayer == 1 ? 2 : 1;
-                        $board.classList.toggle(`board--player${currentPlayer}`);
+                    if (
+                        !$board.classList.contains('game-finished') &&
+                        markCell(board, { row: rowIndex, col: colIndex }, currentPlayer)
+                    ) {
+                        const gameStateChangedEvent = new CustomEvent('gamestatechange');
+                        $board.dispatchEvent(gameStateChangedEvent);
                     }
                 });
 
@@ -44,9 +60,8 @@ function createBoard(rows, cols, d = 0) {
             }
         }
 
-        const infoTextContainer = document.createElement('span');
-        infoTextContainer.setAttribute('id', 'game__infotext');
-        infoTextContainer.innerText = ' ';
+        const infoTextContainer = document.createElement('div');
+        infoTextContainer.setAttribute('id', 'game__info');
 
         document.body.appendChild(infoTextContainer);
         document.body.appendChild($board);
@@ -77,7 +92,7 @@ function createBoard(rows, cols, d = 0) {
         return !board[cell.row][cell.col];
     }
 
-    function updateBoard(board, currentPlayer) {
+    function updateBoard(board) {
         for (let rowIndex in board) {
             for (let colIndex in board[rowIndex]) {
                 if (board[rowIndex][colIndex]) {
@@ -87,8 +102,6 @@ function createBoard(rows, cols, d = 0) {
                 }
             }
         }
-
-        checkWinState(board, currentPlayer);
     }
 
     function areAllElementsEqual(arr) {
@@ -101,16 +114,14 @@ function createBoard(rows, cols, d = 0) {
     - return a state (e.g. an object that contains information, whether someone has won and if so, how they have won)
     - optimize the loops and maybe find a way to use reduce (or use Array.find())
     */
-    function checkWinState(board, currentPlayer) {
+    function getWinState(board, currentPlayer) {
         // Check the rows
         for (let rowIndex in board) {
             let row = board[rowIndex].map((e, colIndex) => {
                 return { value: e, id: `${rowIndex}-${colIndex}` };
             });
             if (areAllElementsEqual(row)) {
-                // return { winner: board[rowIndex][colIndex - 1], condition: 'row', num: rowIndex };
-                console.log(`Winner found: ${currentPlayer}`);
-                console.log(row);
+                return { hasSomeoneWon: true, winner: currentPlayer, winningCells: row };
             }
         }
 
@@ -124,13 +135,7 @@ function createBoard(rows, cols, d = 0) {
             }
 
             if (areAllElementsEqual(column)) {
-                // return {
-                //     winner: board[rowIndex - 1][colIndex],
-                //     condition: 'column',
-                //     num: colIndex,
-                // };
-                console.log(`Winner found: ${currentPlayer}`);
-                console.log(column);
+                return { hasSomeoneWon: true, winner: currentPlayer, winningCells: column };
             }
         }
 
@@ -143,8 +148,7 @@ function createBoard(rows, cols, d = 0) {
         }
 
         if (areAllElementsEqual(firstDiagonal)) {
-            console.log(`Winner found: ${currentPlayer}`);
-            console.log(firstDiagonal);
+            return { hasSomeoneWon: true, winner: currentPlayer, winningCells: firstDiagonal };
         }
 
         // Bottom left to top right
@@ -158,10 +162,38 @@ function createBoard(rows, cols, d = 0) {
         }
 
         if (areAllElementsEqual(secondDiagonal)) {
-            console.log(`Winner found: ${currentPlayer}`);
-            console.log(secondDiagonal);
+            return { hasSomeoneWon: true, winner: currentPlayer, winningCells: secondDiagonal };
+        }
+
+        return { hasSomeoneWon: false };
+    }
+
+    function endGame($boardElement, winState) {
+        $boardElement.classList.add('game-finished');
+
+        const $infoContainer = document.getElementById('game__info');
+        const $infoTextContainer = document.createElement('div');
+        $infoTextContainer.appendChild(
+            document.createTextNode(`PLAYER ${winState.winner} HAS WON`)
+        );
+        $infoContainer.appendChild($infoTextContainer);
+
+        const $playAgainBtn = document.createElement('button');
+        $playAgainBtn.addEventListener('click', () => resetGame($boardElement));
+        $playAgainBtn.appendChild(document.createTextNode('PLAY AGAIN'));
+        $infoContainer.appendChild($playAgainBtn);
+
+        for (let c of winState.winningCells) {
+            let $cellElement = document.getElementById(`cell-${c.id}`);
+            $cellElement.classList.add('board__cell--winning');
         }
     }
 
+    function resetGame($boardElement) {
+        document.getElementById('game__info').remove();
+        $boardElement.remove();
+        renderBoard(createBoard(SIZE, SIZE), 1);
+    }
+
     window.addEventListener('DOMContentLoaded', () => renderBoard(board, currentPlayer));
-})(createBoard(3, 3), 1);
+})(createBoard(SIZE, SIZE), 1);
