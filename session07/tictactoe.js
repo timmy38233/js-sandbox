@@ -13,10 +13,26 @@ function createBoard(rows, cols, d = 0) {
     return board;
 }
 
+const SIZE = 5;
+
 ((board, currentPlayer) => {
     function renderBoard(board, currentPlayer) {
         const $board = document.createElement('div');
         $board.classList.add('board');
+        $board.classList.add(`board--player${currentPlayer}`);
+
+        $board.addEventListener('gamestatechange', (gameState) => {
+            updateBoard(board);
+
+            let winState = getWinState(board, currentPlayer);
+            if (winState.hasSomeoneWon) {
+                endGame(gameState.target, winState);
+            }
+
+            gameState.target.classList.toggle(`board--player${currentPlayer}`);
+            currentPlayer = currentPlayer == 1 ? 2 : 1;
+            gameState.target.classList.toggle(`board--player${currentPlayer}`);
+        });
 
         for (let rowIndex in board) {
             let row = board[rowIndex];
@@ -31,21 +47,33 @@ function createBoard(rows, cols, d = 0) {
                 $cell.setAttribute('id', `cell-${rowIndex}-${colIndex}`);
 
                 $cell.addEventListener('click', () => {
-                    if (markCell(board, { row: rowIndex, col: colIndex }, currentPlayer)) {
-                        updateBoard(board);
-                        currentPlayer = currentPlayer == 1 ? 2 : 1;
+                    if (
+                        !$board.classList.contains('game-finished') &&
+                        markCell(board, { row: rowIndex, col: colIndex }, currentPlayer)
+                    ) {
+                        const gameStateChangedEvent = new CustomEvent('gamestatechange');
+                        $board.dispatchEvent(gameStateChangedEvent);
                     }
-
-                    console.log(board);
                 });
 
                 $row.appendChild($cell);
             }
         }
 
+        const infoTextContainer = document.createElement('div');
+        infoTextContainer.setAttribute('id', 'game__info');
+
+        document.body.appendChild(infoTextContainer);
         document.body.appendChild($board);
     }
 
+    /**
+     * Marks a cell with the value for a given player if it is empty
+     * @param {Array} board
+     * @param {Object} cell
+     * @param {Number} currentPlayer
+     * @returns true if cell yould be marked, false if cell was occupied
+     */
     function markCell(board, cell, currentPlayer) {
         if (isCellEmpty(board, cell)) {
             board[cell.row][cell.col] = currentPlayer;
@@ -54,6 +82,12 @@ function createBoard(rows, cols, d = 0) {
         return false;
     }
 
+    /**
+     * Checks if a cell is empty
+     * @param {Array} board
+     * @param {Object} cell
+     * @returns
+     */
     function isCellEmpty(board, cell) {
         return !board[cell.row][cell.col];
     }
@@ -63,13 +97,15 @@ function createBoard(rows, cols, d = 0) {
             for (let colIndex in board[rowIndex]) {
                 if (board[rowIndex][colIndex]) {
                     let $cell = document.getElementById(`cell-${rowIndex}-${colIndex}`);
-
+                    $cell.classList.add(`board__cell--occupied`);
                     $cell.classList.add(`board__cell--player${board[rowIndex][colIndex]}`);
                 }
             }
         }
+    }
 
-        checkWinState(board);
+    function areAllElementsEqual(arr) {
+        return arr[0].value != 0 && typeof arr.find((e) => e.value != arr[0].value) == 'undefined';
     }
 
     /*
@@ -78,76 +114,86 @@ function createBoard(rows, cols, d = 0) {
     - return a state (e.g. an object that contains information, whether someone has won and if so, how they have won)
     - optimize the loops and maybe find a way to use reduce (or use Array.find())
     */
-    function checkWinState(board) {
+    function getWinState(board, currentPlayer) {
         // Check the rows
         for (let rowIndex in board) {
-            let allEqual = true;
-            let colIndex;
-
-            for (colIndex = 1; colIndex < board[rowIndex].length && allEqual; colIndex++) {
-                allEqual =
-                    board[rowIndex][colIndex] != 0 &&
-                    board[rowIndex][colIndex] === board[rowIndex][colIndex - 1];
-            }
-
-            if (allEqual) {
-                // return { winner: board[rowIndex][colIndex - 1], condition: 'row', num: rowIndex };
-                console.log(`Winner: ${board[rowIndex][colIndex - 1]} with row ${rowIndex}`);
+            let row = board[rowIndex].map((e, colIndex) => {
+                return { value: e, id: `${rowIndex}-${colIndex}` };
+            });
+            if (areAllElementsEqual(row)) {
+                return { hasSomeoneWon: true, winner: currentPlayer, winningCells: row };
             }
         }
-
 
         // Check the columns
         let row = board[0];
 
-        for (colIndex = 0; colIndex < row.length; colIndex++) {
-            let rowIndex = 1;
-            let allEqual = true;
-            for (; rowIndex < board.length && allEqual; rowIndex++) {
-                allEqual =
-                    board[rowIndex][colIndex] != 0 &&
-                    board[rowIndex][colIndex] === board[rowIndex - 1][colIndex];
+        for (let colIndex = 0; colIndex < row.length; colIndex++) {
+            let column = [];
+            for (let rowIndex = 0; rowIndex < board.length; rowIndex++) {
+                column.push({ value: board[rowIndex][colIndex], id: `${rowIndex}-${colIndex}` });
             }
 
-            if (allEqual) {
-                // return {
-                //     winner: board[rowIndex - 1][colIndex],
-                //     condition: 'column',
-                //     num: colIndex,
-                // };
-                console.log(`Winner: ${board[rowIndex - 1][colIndex]} with col ${colIndex}`);
+            if (areAllElementsEqual(column)) {
+                return { hasSomeoneWon: true, winner: currentPlayer, winningCells: column };
             }
         }
 
         // Check the diagonals
-        {
-            let allEqual = true;
-            for (let i = 1; i < board.length && allEqual; i++) {
-                allEqual = board[i][i] != 0 && board[i - 1][i - 1] === board[i][i];
-            }
 
-            if (allEqual) {
-                console.log('Winner: diagonal 1');
-            }
+        // Top left to bottom right
+        let firstDiagonal = [];
+        for (let i = 0; i < board.length; i++) {
+            firstDiagonal.push({ value: board[i][i], id: `${i}-${i}` });
         }
 
-        {
-            let allEqual = true;
-            for (let i = 1; i < board.length && allEqual; i++) {
-                allEqual =
-                    board[2 - i][2 - (2 - i)] != 0 &&
-                    board[2 - i][2 - (2 - i)] === board[2 - (i - 1)][2 - (2 - (i - 1))];
-            }
+        if (areAllElementsEqual(firstDiagonal)) {
+            return { hasSomeoneWon: true, winner: currentPlayer, winningCells: firstDiagonal };
+        }
 
-            // board[2-0][2-2] = board[2][0]
-            // board[2-1][2-1] = board[1][1]
-            // board[2-2][2-0] = board[0][2]
+        // Bottom left to top right
+        let secondDiagonal = [];
+        for (let i = 0; i < board.length; i++) {
+            // e.g. for a 3x3 board it builds an array of board[2][0], board[1][1], board[0][2]
+            secondDiagonal.push({
+                value: board[board.length - 1 - i][i],
+                id: `${board.length - 1 - i}-${i}`,
+            });
+        }
 
-            if (allEqual) {
-                console.log('Winner: diagonal 2');
-            }
+        if (areAllElementsEqual(secondDiagonal)) {
+            return { hasSomeoneWon: true, winner: currentPlayer, winningCells: secondDiagonal };
+        }
+
+        return { hasSomeoneWon: false };
+    }
+
+    function endGame($boardElement, winState) {
+        $boardElement.classList.add('game-finished');
+
+        const $infoContainer = document.getElementById('game__info');
+        const $infoTextContainer = document.createElement('div');
+        $infoTextContainer.appendChild(
+            document.createTextNode(`PLAYER ${winState.winner} HAS WON`)
+        );
+        $infoContainer.appendChild($infoTextContainer);
+
+        const $playAgainBtn = document.createElement('button');
+        $playAgainBtn.addEventListener('click', () => resetGame($boardElement));
+        $playAgainBtn.appendChild(document.createTextNode('PLAY AGAIN'));
+        $infoContainer.appendChild($playAgainBtn);
+
+        for (let c of winState.winningCells) {
+            let $cellElement = document.getElementById(`cell-${c.id}`);
+            $cellElement.classList.add('board__cell--winning');
         }
     }
 
+    function resetGame($boardElement) {
+        document.getElementById('game__info').remove();
+        $boardElement.remove();
+        renderBoard(createBoard(SIZE, SIZE), 1);
+    }
+
     window.addEventListener('DOMContentLoaded', () => renderBoard(board, currentPlayer));
-})(createBoard(3, 3), 1);
+})(createBoard(SIZE, SIZE), 1);
