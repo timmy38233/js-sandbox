@@ -62,6 +62,8 @@ const SIZE = 3;
                         const gameStateChangedEvent = new CustomEvent('gamestatechange');
                         $board.dispatchEvent(gameStateChangedEvent);
                     }
+
+                    console.log(board);
                 });
 
                 $row.appendChild($cell);
