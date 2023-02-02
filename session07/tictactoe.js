@@ -13,20 +13,14 @@ function createBoard(rows, cols, d = 0) {
     return board;
 }
 
-const SIZE = 3;
+const SIZE = 5;
 
 ((board, currentPlayer) => {
-    /**
-     * Renders a new game board
-     * @param {Array} board Array where the board state is saved
-     * @param {Number} currentPlayer The number of the starting player
-     */
     function renderBoard(board, currentPlayer) {
         const $board = document.createElement('div');
         $board.classList.add('board');
         $board.classList.add(`board--player${currentPlayer}`);
 
-        // Listen for custom gamestatechange event to update the board and check for a win
         $board.addEventListener('gamestatechange', (gameState) => {
             updateBoard(board);
 
@@ -40,7 +34,6 @@ const SIZE = 3;
             gameState.target.classList.toggle(`board--player${currentPlayer}`);
         });
 
-        // Generate the board
         for (let rowIndex in board) {
             let row = board[rowIndex];
 
@@ -53,7 +46,6 @@ const SIZE = 3;
                 $cell.classList.add('board__cell');
                 $cell.setAttribute('id', `cell-${rowIndex}-${colIndex}`);
 
-                // Make a move
                 $cell.addEventListener('click', () => {
                     if (
                         !$board.classList.contains('game-finished') &&
@@ -112,13 +104,16 @@ const SIZE = 3;
         }
     }
 
-
-    // [{value: 1, id: '0-0'}, {1, id: '0-1'}]
     function areAllElementsEqual(arr) {
         return arr[0].value != 0 && typeof arr.find((e) => e.value != arr[0].value) == 'undefined';
     }
 
-
+    /*
+    TODO:
+    - separate checks in individual functions
+    - return a state (e.g. an object that contains information, whether someone has won and if so, how they have won)
+    - optimize the loops and maybe find a way to use reduce (or use Array.find())
+    */
     function getWinState(board, currentPlayer) {
         // Check the rows
         for (let rowIndex in board) {
@@ -173,11 +168,6 @@ const SIZE = 3;
         return { hasSomeoneWon: false };
     }
 
-    /**
-     * Ends the game after someone wins
-     * @param {HTMLElement} $boardElement the root board element
-     * @param {Object} winState contains information about who won and which cells to highlight
-     */
     function endGame($boardElement, winState) {
         $boardElement.classList.add('game-finished');
 
@@ -199,10 +189,6 @@ const SIZE = 3;
         }
     }
 
-    /**
-     * Resets the game and renders a new board
-     * @param {HTMLElement} $boardElement the root board element
-     */
     function resetGame($boardElement) {
         document.getElementById('game__info').remove();
         $boardElement.remove();
