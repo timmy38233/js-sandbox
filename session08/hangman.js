@@ -176,7 +176,6 @@
             (acc, curr, i) => (curr === letter ? [...acc, i] : acc),
             []
         );
-        console.log(indicesForLetter);
 
         /*
             Takes the indices and builds a new array with the map function. Result: ['.hangman__letter--index2', .hangman__letter--index2']
@@ -200,6 +199,7 @@
         gameState.elements.$counter.innerText = --gameState.livesLeft;
 
         gameState.elements.$counter.classList.remove('animate');
+        // This is needed to rerender the element and trigger the animation
         void gameState.elements.$counter.offsetWidth;
         gameState.elements.$counter.classList.add('animate');
     }
