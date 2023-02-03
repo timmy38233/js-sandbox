@@ -23,6 +23,7 @@ body {
 }
 
 .hangman {
+    min-width: 700px;
     min-height: 100%;
     padding: 25px;
     border-left: 1px solid #666;
@@ -51,6 +52,7 @@ body {
 
 .hangman__word {
     display: flex;
+    justify-content: center;
     margin-top: 25px;
 }
 
