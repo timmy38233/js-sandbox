@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Async promises</title>
+
+    <script src="./asyncToPromise.js"></script>
+
+    <style>
+        #resizeMe {
+            border: 1px solid green;
+            width: 200px;
+            height: 100px;
+            resize: both;
+            display: block;
+            overflow: auto;
+        }
+    </style>
+</head>
+<body>
+    <button id="clickMe">Click me</button>
+    <div id="resizeMe">Resize me</div>
+    <div id="timeoutMe">Timeout not fired</div>
+</body>
+</html>
